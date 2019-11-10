@@ -1,7 +1,9 @@
 package com.wl.web.blog.factory;
 
+import com.wl.web.blog.dao.ArticalDao;
 import com.wl.web.blog.dao.UserDao;
 import com.wl.web.blog.dao.UserDaoImpl.UserDaoImpl;
+import com.wl.web.blog.dao.articalDaoImpl.articalDaoImpl;
 
 /**
  * @author 小黑
@@ -13,5 +15,7 @@ import com.wl.web.blog.dao.UserDaoImpl.UserDaoImpl;
 public class DaoFactory {
         public static UserDao getUserDaoInstance(){
         return  new UserDaoImpl();
+        }
+        public static ArticalDao getArticalInstance(){return  new articalDaoImpl();
         }
         }
