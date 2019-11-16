@@ -1,5 +1,6 @@
 package com.wl.web.blog.dao;
 
+import com.wl.web.blog.entity.User;
 import com.wl.web.blog.factory.DaoFactory;
 import com.wl.web.blog.util.JSoupSpider;
 import org.junit.Test;
@@ -27,4 +28,21 @@ public class UserDaoTest {
 
 
     }
+
+    @Test
+    public void addUser() {
+        User user =new User();
+        user.setMobile("12345678910");
+        user.setPassword("123456");
+        try {
+            int result=userDao.addUser(user);
+            logger.info("成功"+user.getMobile()+"    "
+                    +user.getPassword()+"  "
+            +user.getId());
+
+        } catch (SQLException e) {
+            logger.info("注册失败");
+            e.printStackTrace();
+        }
     }
+}

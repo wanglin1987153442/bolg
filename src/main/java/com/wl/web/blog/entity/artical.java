@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Data
 public class artical {
     private Integer id;
+    private  Integer user_id;
     private String  title;
     private  String text;
     private  String avatar;

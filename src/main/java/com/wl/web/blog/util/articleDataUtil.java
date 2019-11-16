@@ -55,12 +55,24 @@ public class articleDataUtil {
         LocalDate now = LocalDate.now();
         Random random = new Random();
         int bound = random.nextInt(8888);
-        int hour = random.nextInt(25);
-        int min = random.nextInt(61);
-        int sec =random.nextInt(61);
+        int hour = random.nextInt(24);
+        int min = random.nextInt(60);
+        int sec =random.nextInt(60);
 
        LocalDateTime localDateTime= now.minusDays(bound).atTime(hour,min,sec);
         return  localDateTime;
+
+    }
+    public static int getUser_id(){
+
+
+
+            Random rand = new Random();
+            int max = 96;
+            int min = 1;
+            int randomNum = rand.nextInt((max - min) + 1) + min;
+            return randomNum;
+
 
     }
 

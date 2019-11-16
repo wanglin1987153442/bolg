@@ -26,21 +26,21 @@ import java.util.List;
  * @Date 2019/11/10
  * @Version 1.0
  */
-@WebServlet(urlPatterns = "/article")
+@WebServlet(urlPatterns = "/api/article")
 public class articalController extends HttpServlet {
 
-    private static Logger logger= LoggerFactory.getLogger(UserController.class);
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
     private ArticalDao articalDao = DaoFactory.getArticalInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         try {
-            List<artical> articalList =articalDao.findArticalAll();
-            Gson gson =new Gson();
+            List<artical> articalList = articalDao.findArticalAll();
+            Gson gson = new Gson();
             resp.setContentType("application/json;charset=utf-8");
             PrintWriter out = resp.getWriter();
-       ResponseObject ro =     ResponseObject.success(200,"成功",articalList);
+            ResponseObject ro = ResponseObject.success(200, "成功", articalList);
             out.print(gson.toJson(ro));
             out.close();
         } catch (SQLException e) {

@@ -16,4 +16,9 @@ public interface UserDao {
     int[] batchInsert(List<User> userList) throws SQLException;
 
     User findUserByMobile(String mobile) throws SQLException;
+
+    /**
+     * 注册用户
+     */
+    int addUser(User user)throws SQLException;
 }

@@ -25,7 +25,7 @@ public class articalDaoImpl implements ArticalDao {
     public int[] batchInsert(List<artical> articalList) throws SQLException {
         Connection connection = DbUtil.getConnection();
         connection.setAutoCommit(false);
-        String sql="INSERT INTO article(title,avatar,text,comment,person_like,time) VALUES (?,?,?,?,?,?)";
+        String sql="INSERT INTO article(title,avatar,text,comment,person_like,time,user_id) VALUES (?,?,?,?,?,?,?)";
         PreparedStatement pstmt =connection.prepareStatement(sql);
         articalList.forEach(artical -> {
             try {
@@ -36,6 +36,8 @@ public class articalDaoImpl implements ArticalDao {
                 pstmt.setInt(4,artical.getComment());
                 pstmt.setInt(5,artical.getPerson_like());
                 pstmt.setObject(6,artical.getTime());
+                pstmt.setInt(7,artical.getUser_id());
+//                pstmt.setInt(6,artical.getUser_id());
                 pstmt.addBatch();
             } catch (SQLException e) {
                e.printStackTrace();

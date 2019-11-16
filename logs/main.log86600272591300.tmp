@@ -1,0 +1,3 @@
+2019-11-14.14:00:15 ERROR [main] com.wl.web.blog.dao.ArticalDaoTest.batchInsert:30  批量插入失败
+2019-11-14.14:01:02 INFO  [main] com.wl.web.blog.dao.ArticalDaoTest.batchInsert:26  插入成功一共50条记录
+2019-11-14.14:10:13 INFO  [main] com.wl.web.blog.dao.ArticalDaoTest.batchInsert:26  插入成功一共50条记录

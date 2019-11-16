@@ -26,7 +26,7 @@ public class JSoupSpiderAboutJianShu {
     public static List<artical> getsomeUser() {
         Document document = null;
         List<artical> articalList = new ArrayList<>(100);
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 20; i++) {
             if (i%2==0) {
                 try {
                     document = Jsoup.connect("https://book.douban.com/review/best/?start=" + i * 10).get();
@@ -43,12 +43,13 @@ public class JSoupSpiderAboutJianShu {
                     Element title = main_bd.child(0);
                     Element description = main_bd.child(1);
                     artical artical = new artical();
-                    artical.setAvatar("https:" + linkChildren.get(0).attr("src"));
+                    artical.setAvatar( linkChildren.get(0).attr("src"));
                     artical.setTitle(title.text());
                     artical.setText(description.text());
                     artical.setComment(articleDataUtil.getComment());
                     artical.setPerson_like(articleDataUtil.getLike());
                     artical.setTime(articleDataUtil.getTime());
+                    artical.setUser_id(articleDataUtil.getUser_id());
                     articalList.add(artical);
 
                 });
@@ -57,4 +58,27 @@ public class JSoupSpiderAboutJianShu {
         return articalList;
     }
 
-}
+    public static void main(String[] args) {
+        Document document = null;
+
+        for (int i = 1; i <= 10; i++) {
+            if (i % 2 == 0) {
+                try {
+                    document = Jsoup.connect("https://book.douban.com/review/best/?start=" + i * 10).get();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    logger.error("连接失败");
+                }
+                Elements divs = document.getElementsByClass("main review-item");
+                divs.forEach(div -> {
+                            Element subject_img = div.child(0);
+                            Elements linkChildren = subject_img.children();
+                    System.out.println(linkChildren.get(0).attr("src"));
+            });
+
+            }
+
+
+        }
+    }
+    }

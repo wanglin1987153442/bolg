@@ -26,7 +26,7 @@ public class JSoupSpider {
     public static List<User> getUsers() {
         Document document = null;
         List<User> userList = new ArrayList<>(100);
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 2; i <= 5; i++) {
             try {
                 document = Jsoup.connect("https://www.jianshu.com/recommendations/users?utm_source=desktop&utm_medium=index-users&page=" + i).get();
             } catch (IOException e) {

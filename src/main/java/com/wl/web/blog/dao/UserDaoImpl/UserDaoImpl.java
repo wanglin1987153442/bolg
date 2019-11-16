@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
         });
  int [] result = pstmt.executeBatch();
  connection.commit();
- DbUtil.close(null ,pstmt,connection);
+// DbUtil.close(null ,pstmt,connection);
  return result;
     }
 
@@ -72,7 +72,20 @@ public class UserDaoImpl implements UserDao {
             user.setArticles(rs.getShort("articles"));
             user.setCreateTime(rs.getTimestamp("create_time").toLocalDateTime());
             user.setStatus(rs.getShort("status"));
-        }
-  return  user;
+              }
+                   return  user;
+    }
+
+    @Override
+    public int addUser(User user) throws SQLException {
+        Connection connection =DbUtil.getConnection();
+        String sql= "INSERT INTO t_user (mobile,password) VALUES(?,?)";
+        PreparedStatement pstmt =connection.prepareStatement(sql);
+        pstmt.setString(1,user.getMobile());
+        pstmt.setString(2,user.getPassword());
+        int  result = pstmt.executeUpdate();
+        DbUtil.close(null ,pstmt,connection);
+
+        return result;
     }
 }

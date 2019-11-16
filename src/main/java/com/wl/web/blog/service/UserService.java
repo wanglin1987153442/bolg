@@ -1,6 +1,7 @@
 package com.wl.web.blog.service;
 
 import com.wl.web.blog.domain.UserDto;
+import com.wl.web.blog.entity.User;
 
 import java.util.Map;
 
@@ -18,4 +19,5 @@ public interface UserService {
      * @return
      */
     Map<String,Object> signIn(UserDto userDto);
+    Map<String,Object> zhuce(User user);
 }
