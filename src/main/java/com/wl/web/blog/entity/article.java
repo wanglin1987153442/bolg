@@ -13,13 +13,17 @@ import java.time.LocalDateTime;
  * @Version 1.0
  */
 @Data
-public class artical {
+public class article {
     private Integer id;
     private  Integer user_id;
+    private Long topicId;
     private String  title;
-    private  String text;
-    private  String avatar;
+    private  String content;
+    private  String cover;
+    private String summary;
+    //评论数
     private Integer comment;
     private  Integer person_like;
-    private LocalDateTime time;
+
+    private LocalDateTime createTime;
 }

@@ -3,11 +3,12 @@ package com.wl.web.blog.dao.UserDaoImpl;
 import com.wl.web.blog.dao.UserDao;
 import com.wl.web.blog.entity.User;
 import com.wl.web.blog.util.DbUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ import java.util.List;
  * @Version 1.0
  */
 public class UserDaoImpl implements UserDao {
-
+    private static Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
     @Override
     public int[] batchInsert(List<User> userList) throws SQLException {
         Connection connection = DbUtil.getConnection();
@@ -36,10 +37,11 @@ public class UserDaoImpl implements UserDao {
                 //日期的设置，可以使用setObject
                 pstmt.setObject(6, user.getBirthday());
                 pstmt.setString(7, user.getIntroduction());
+
                 pstmt.setObject(8, user.getCreateTime());
                 pstmt.addBatch();
             } catch (SQLException e) {
-
+                logger.error("批量加入用户数据产生异常");
             }
         });
  int [] result = pstmt.executeBatch();
@@ -64,8 +66,14 @@ public class UserDaoImpl implements UserDao {
             user.setNickname(rs.getString("nickname"));
             user.setAvatar(rs.getString("avatar"));
             user.setGender(rs.getString("gender"));
-            user.setBirthday(rs.getDate("birthday").toLocalDate());
+            if (rs.getDate("birthday")!=null){
+                user.setBirthday(rs.getDate("birthday").toLocalDate());
+            }else {
+                user.setBirthday(null);
+            }
             user.setIntroduction(rs.getString("introduction"));
+            user.setBanner(rs.getString("banner"));
+            user.setEmail(rs.getString("email"));
             user.setAddress(rs.getString("address"));
             user.setFollows(rs.getShort("follows"));
             user.setFans(rs.getShort("fans"));
@@ -83,8 +91,11 @@ public class UserDaoImpl implements UserDao {
         PreparedStatement pstmt =connection.prepareStatement(sql);
         pstmt.setString(1,user.getMobile());
         pstmt.setString(2,user.getPassword());
+
+
+
         int  result = pstmt.executeUpdate();
-        DbUtil.close(null ,pstmt,connection);
+//        DbUtil.close(null ,pstmt,connection);
 
         return result;
     }
