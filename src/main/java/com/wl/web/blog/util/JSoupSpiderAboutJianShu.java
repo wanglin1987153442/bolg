@@ -1,7 +1,8 @@
 package com.wl.web.blog.util;
 
 
-import com.wl.web.blog.entity.artical;
+
+import com.wl.web.blog.entity.Article;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,9 +24,9 @@ import java.util.List;
 public class JSoupSpiderAboutJianShu {
     private static Logger logger = LoggerFactory.getLogger(JSoupSpider.class);
 
-    public static List<artical> getsomeUser() {
+    public static List<Article> getsomeUser() {
         Document document = null;
-        List<artical> articalList = new ArrayList<>(100);
+        List<Article> articalList = new ArrayList<>(100);
         for (int i = 1; i <= 20; i++) {
             if (i%2==0) {
                 try {
@@ -42,15 +43,16 @@ public class JSoupSpiderAboutJianShu {
                     Element main_bd = div.child(2);
                     Element title = main_bd.child(0);
                     Element description = main_bd.child(1);
-                    artical artical = new artical();
-                    artical.setAvatar( linkChildren.get(0).attr("src"));
-                    artical.setTitle(title.text());
-                    artical.setText(description.text());
-                    artical.setComment(articleDataUtil.getComment());
-                    artical.setPerson_like(articleDataUtil.getLike());
-                    artical.setTime(articleDataUtil.getTime());
-                    artical.setUser_id(articleDataUtil.getUser_id());
-                    articalList.add(artical);
+                    Article article = new Article();
+                    article.setCover( linkChildren.get(0).attr("src"));
+                    article.setTitle(title.text());
+                    article.setContent(description.text());
+                    article.setComment(articleDataUtil.getComment());
+                    article.setPerson_like(articleDataUtil.getLike());
+                    article.setCreateTime(articleDataUtil.getTime());
+                    article.setUser_id(articleDataUtil.getUser_id());
+                    article.setTopicId((long) 111111);
+                    articalList.add(article);
 
                 });
             }

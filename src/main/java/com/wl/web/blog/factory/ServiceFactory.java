@@ -1,6 +1,10 @@
 package com.wl.web.blog.factory;
 
+import com.wl.web.blog.service.ArticleService;
+import com.wl.web.blog.service.TopicService;
 import com.wl.web.blog.service.UserService;
+import com.wl.web.blog.service.UserServiceImpl.ArticleServiceImpl;
+import com.wl.web.blog.service.UserServiceImpl.TopicServiceImpl;
 import com.wl.web.blog.service.UserServiceImpl.UserServiceImpl;
 
 /**
@@ -13,6 +17,13 @@ import com.wl.web.blog.service.UserServiceImpl.UserServiceImpl;
 public class ServiceFactory {
     public static UserService getUserServiceInstance(){
         return new UserServiceImpl();
+    }
+    public static ArticleService getArticleServiceInstance() {
+        return new ArticleServiceImpl();
+    }
+
+    public static TopicService getTopicServiceInstance() {
+        return new TopicServiceImpl();
     }
 
 }

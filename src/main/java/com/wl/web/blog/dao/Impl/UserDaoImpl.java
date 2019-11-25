@@ -1,14 +1,14 @@
-package com.wl.web.blog.dao.UserDaoImpl;
+package com.wl.web.blog.dao.Impl;
 
 import com.wl.web.blog.dao.UserDao;
+import com.wl.web.blog.domain.Vo.UserVo;
 import com.wl.web.blog.entity.User;
+import com.wl.web.blog.util.BeanHandler;
 import com.wl.web.blog.util.DbUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -24,7 +24,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int[] batchInsert(List<User> userList) throws SQLException {
         Connection connection = DbUtil.getConnection();
-        String sql = "INSERT INTO t_user (mobile,password,nickname,avatar,gender,birthday,introduction,create_time) VALUES (?,?,?,?,?,?,?,?) ";
+        String sql = "INSERT INTO t_user (mobile,password,nickname,avatar,gender,birthday,introduction,create_time,address) VALUES (?,?,?,?,?,?,?,?,?) ";
         PreparedStatement pstmt =connection.prepareStatement(sql);
         connection.setAutoCommit(false);//设置自动提交为false
         userList.forEach(user -> {
@@ -39,6 +39,7 @@ public class UserDaoImpl implements UserDao {
                 pstmt.setString(7, user.getIntroduction());
 
                 pstmt.setObject(8, user.getCreateTime());
+                pstmt.setString(9,user.getAddress());
                 pstmt.addBatch();
             } catch (SQLException e) {
                 logger.error("批量加入用户数据产生异常");
@@ -46,7 +47,7 @@ public class UserDaoImpl implements UserDao {
         });
  int [] result = pstmt.executeBatch();
  connection.commit();
-// DbUtil.close(null ,pstmt,connection);
+        DbUtil.close(connection, pstmt);
  return result;
     }
 
@@ -96,7 +97,64 @@ public class UserDaoImpl implements UserDao {
 
         int  result = pstmt.executeUpdate();
 //        DbUtil.close(null ,pstmt,connection);
-
+        DbUtil.close(connection, pstmt);
         return result;
+    }
+
+
+
+
+
+
+    @Override
+    public List<User> selectHotUsers() throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT * FROM t_user ORDER BY fans DESC LIMIT 10 ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+        List<User> userList = BeanHandler.convertUser(rs);
+        DbUtil.close(connection, pst, rs);
+        return userList;
+    }
+
+    @Override
+    public List<User> selectByPage(int currentPage, int count) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT * FROM t_user LIMIT ?,? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setInt(1, (currentPage - 1) * count);
+        pst.setInt(2, count);
+        ResultSet rs = pst.executeQuery();
+        List<User> userList = BeanHandler.convertUser(rs);
+        DbUtil.close(connection, pst, rs);
+        return userList;
+    }
+
+    @Override
+    public UserVo getUser(long id) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT * FROM t_user WHERE id = ? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setLong(1, id);
+        ResultSet rs = pst.executeQuery();
+        UserVo userVo = new UserVo();
+        User user = BeanHandler.convertUser(rs).get(0);
+        userVo.setUser(user);
+        DbUtil.close(connection, pst, rs);
+        return userVo;
+    }
+
+    @Override
+    public List<User> selectByKeywords(String keywords) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT * FROM t_user " +
+                "WHERE nickname LIKE ?  OR introduction LIKE ? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, "%" + keywords + "%");
+        pst.setString(2, "%" + keywords + "%");
+        ResultSet rs = pst.executeQuery();
+        List<User> userList = BeanHandler.convertUser(rs);
+        DbUtil.close(connection, pst, rs);
+        return userList;
     }
 }

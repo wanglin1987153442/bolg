@@ -1,9 +1,15 @@
 package com.wl.web.blog.factory;
 
-import com.wl.web.blog.dao.ArticalDao;
+
+import com.wl.web.blog.dao.Impl.RegionDaoImpl;
+import com.wl.web.blog.dao.Impl.TopicDaoImpl;
+import com.wl.web.blog.dao.Impl.articleDaoImpl;
+import com.wl.web.blog.dao.RegionDao;
+import com.wl.web.blog.dao.TopicDao;
 import com.wl.web.blog.dao.UserDao;
-import com.wl.web.blog.dao.UserDaoImpl.UserDaoImpl;
-import com.wl.web.blog.dao.articalDaoImpl.articalDaoImpl;
+import com.wl.web.blog.dao.Impl.UserDaoImpl;
+import com.wl.web.blog.dao.articleDao;
+
 
 /**
  * @author 小黑
@@ -16,6 +22,14 @@ public class DaoFactory {
         public static UserDao getUserDaoInstance(){
         return  new UserDaoImpl();
         }
-        public static ArticalDao getArticalInstance(){return  new articalDaoImpl();
+        public static articleDao getArticalInstance(){return  new articleDaoImpl();
+        }
+
+        public static TopicDao getTopicDaoInstance() {
+                return new TopicDaoImpl();
+        }
+
+        public static RegionDao getRegionDaoInstance() {
+                return new RegionDaoImpl();
         }
         }

@@ -2,13 +2,12 @@ package com.wl.web.blog.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.wl.web.blog.dao.UserDao;
-import com.wl.web.blog.domain.UserDto;
-import com.wl.web.blog.entity.User;
-import com.wl.web.blog.factory.DaoFactory;
+import com.wl.web.blog.domain.Dto.UserDto;
 import com.wl.web.blog.factory.ServiceFactory;
+import com.wl.web.blog.listener.MySessionContext;
 import com.wl.web.blog.service.UserService;
-import com.wl.web.blog.util.ResponseObject;
+import com.wl.web.blog.util.Result;
+import com.wl.web.blog.util.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,27 +16,92 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.Map;
 
 /**
  * @author 小黑
- * @ClassNameUserController
+ * @ClassNamedasd
  * @Description TODO
- * @Date 2019/11/9
+ * @Date 2019/11/25
  * @Version 1.0
  */
-@WebServlet(urlPatterns = "/sign-in")
+@WebServlet(urlPatterns = {"/api/user", "/api/user/*"})
 public class UserController extends HttpServlet {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
     private UserService userService = ServiceFactory.getUserServiceInstance();
 
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String uri = req.getRequestURI().trim();
+        if ("/api/user".equals(uri)) {
+            String page = req.getParameter("page");
+            String keywords = req.getParameter("keywords");
+            String count = req.getParameter("count");
+            if (page != null) {
+                getUsersByPage(resp, Integer.parseInt(page), Integer.parseInt(count));
+            } else if (keywords != null) {
+                getUsersByKeywords(resp, keywords);
+            } else {
+                getHotUsers(req, resp);
+            }
+        } else {
+            getUser(req, resp);
+        }
+    }
+
+    private void getHotUsers(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Gson gson = new GsonBuilder().create();
+        Result result = userService.getHotUsers();
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
+
+    private void getUsersByPage(HttpServletResponse resp, int page, int count) throws IOException {
+        Gson gson = new GsonBuilder().create();
+        Result result = userService.selectByPage(page, count);
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
+
+    private void getUsersByKeywords(HttpServletResponse resp, String keywords) throws IOException {
+        Gson gson = new GsonBuilder().create();
+        Result result = userService.selectByKeywords(keywords);
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
+
+
+    private void getUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String info = req.getPathInfo().trim();
+        //取得路径参数
+        String id = info.substring(info.indexOf("/") + 1);
+        Gson gson = new GsonBuilder().create();
+        Result result = userService.getUser(Long.parseLong(id));
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String uri = req.getRequestURI().trim();
+        if ("/api/user/sign-in".equals(uri)) {
+            signIn(req, resp);
+        } else if ("/api/user/sign-up".equals(uri)) {
+            signUp(req, resp);
+        } else if ("/api/user/check".equals(uri)) {
+            check(req, resp);
+        }
+    }
+
+    private void signIn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BufferedReader reader = req.getReader();
         StringBuilder stringBuilder = new StringBuilder();
         String line;
@@ -47,54 +111,31 @@ public class UserController extends HttpServlet {
         logger.info("登录用户信息：" + stringBuilder.toString());
         Gson gson = new GsonBuilder().create();
         UserDto userDto = gson.fromJson(stringBuilder.toString(), UserDto.class);
-        Map<String, Object> map = userService.signIn(userDto);
-        String msg = (String) map.get("msg");
-        System.out.println(msg);
-        ResponseObject ro;
-        switch (msg) {
-            case "登录成功":
-                ro = ResponseObject.success(200, msg, map.get("data"));
-                break;
-            case "密码错误":
-            case"密码为空":
-            case "手机号不存在":
-            default:
-                ro = ResponseObject.success(200, msg);
-        }
+        String inputCode = userDto.getCode().trim();
+
+        //取得客户端请求头里带来的token
+        String sessionId = req.getHeader("Access-Token");
+        System.out.println("客户端传来的JSESSIONID：" + sessionId);
+        MySessionContext myc = MySessionContext.getInstance();
+        HttpSession session = myc.getSession(sessionId);
+        String correctCode = session.getAttribute("code").toString();
+        System.out.println("正确的验证码：" + correctCode);
         PrintWriter out = resp.getWriter();
-        out.print(gson.toJson(ro));
+        if (inputCode.equalsIgnoreCase(correctCode)) {
+            Result result = userService.signIn(userDto);
+            out.print(gson.toJson(result));
+        } else {
+            Result result = Result.failure(ResultCode.USER_VERIFY_CODE_ERROR);
+            out.print(gson.toJson(result));
+        }
         out.close();
     }
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        BufferedReader reader=req.getReader();
-        StringBuilder stringBuilder=new StringBuilder();
-        String line =null;
-        while((line=reader.readLine())!=null){
-            stringBuilder.append(line);
-        }
-        System.out.println(stringBuilder.toString());
-        Gson gson = new GsonBuilder().create();
-        User user=gson.fromJson(stringBuilder.toString(),User.class);
-        Map<String, Object> map = userService.zhuce(user);
-        String msg = (String)map.get("msg");
-        ResponseObject ro;
-        switch(msg){
-            case "注册成功":
-                ro=ResponseObject.success(200,msg, user);
-                break;
-            case "注册失败":
-                ro = ResponseObject.error(250,msg);
-                break;
-            default:
-                ro=ResponseObject.success(200,msg);
-        }
-        resp.setContentType("application/json;charset=utf-8");
-        PrintWriter out=resp.getWriter();
-        out.print(gson.toJson(ro));
-        out.close();
-   }
+    private void check(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.getWriter().println("验证账号");
     }
 
+    private void signUp(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.getWriter().println("注册");
+    }
+}

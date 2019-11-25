@@ -1,0 +1,6 @@
+2019-11-19.16:20:37 ERROR [main] com.wl.web.blog.service.UserServiceImpl.UserServiceImpl.signIn:38  手机号查询用户异常
+2019-11-19.16:25:08 ERROR [main] com.wl.web.blog.dao.ArticalDaoTest.batchInsert:31  批量插入失败
+2019-11-19.16:29:04 ERROR [main] com.wl.web.blog.dao.ArticalDaoTest.batchInsert:31  批量插入失败
+2019-11-19.16:29:56 ERROR [main] com.wl.web.blog.dao.ArticalDaoTest.batchInsert:31  批量插入失败
+2019-11-19.16:31:04 ERROR [main] com.wl.web.blog.dao.ArticalDaoTest.batchInsert:31  批量插入失败
+2019-11-19.16:33:49 ERROR [main] com.wl.web.blog.dao.ArticalDaoTest.findArticalAll:43  查询失败

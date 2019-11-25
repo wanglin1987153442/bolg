@@ -1,0 +1,7 @@
+2019-11-25.14:55:43 INFO  [main] com.wl.web.blog.dao.UserDaoTest.batchInsert:24  插入成功一共96条记录
+2019-11-25.14:56:16 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:47  注册失败
+2019-11-25.14:56:34 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:42  成功1806997128    123456  null
+2019-11-25.14:56:44 ERROR [main] com.wl.web.blog.util.BeanHandler.convertUser:59  用户数据结果集解析产生异常
+2019-11-25.14:56:55 ERROR [main] com.wl.web.blog.util.BeanHandler.convertUser:59  用户数据结果集解析产生异常
+2019-11-25.14:57:11 ERROR [main] com.wl.web.blog.util.BeanHandler.convertUser:59  用户数据结果集解析产生异常
+2019-11-25.14:57:49 INFO  [main] com.wl.web.blog.dao.ArticalDaoTest.batchInsert:25  插入成功一共89条记录

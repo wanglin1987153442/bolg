@@ -68,7 +68,7 @@ public class articleDataUtil {
 
 
             Random rand = new Random();
-            int max = 96;
+            int max = 80;
             int min = 1;
             int randomNum = rand.nextInt((max - min) + 1) + min;
             return randomNum;

@@ -1,8 +1,12 @@
-2019-11-14.20:34:54 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:39  成功
-2019-11-14.20:37:20 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:39  成功123456123456
-2019-11-14.20:41:03 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:39  成功123456/n123456
-2019-11-14.20:49:08 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:39  成功12345678910    123456
-2019-11-14.20:49:48 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:43  注册失败
-2019-11-14.20:50:24 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:44  注册失败
-2019-11-14.20:58:17 INFO  [main] com.wl.web.blog.dao.UserDaoTest.batchInsert:23  插入成功一共96条记录
-2019-11-14.20:59:19 INFO  [main] com.wl.web.blog.dao.ArticalDaoTest.batchInsert:26  插入成功一共89条记录
+2019-11-25.15:14:30 ERROR [main] com.wl.web.blog.dao.ArticalDaoTest.findArticalAll:41  查询失败
+2019-11-25.15:15:23 ERROR [main] com.wl.web.blog.util.BeanHandler.convertArticle:124  文章数据结果集解析异常
+2019-11-25.15:18:55 ERROR [main] com.wl.web.blog.dao.ArticalDaoTest.batchInsert:29  批量插入失败
+2019-11-25.15:20:22 INFO  [main] com.wl.web.blog.dao.ArticalDaoTest.batchInsert:25  插入成功一共89条记录
+2019-11-25.15:20:38 ERROR [main] com.wl.web.blog.util.BeanHandler.convertArticle:124  文章数据结果集解析异常
+2019-11-25.15:26:00 ERROR [main] com.wl.web.blog.util.BeanHandler.convertArticle:124  文章数据结果集解析异常
+2019-11-25.15:26:53 ERROR [main] com.wl.web.blog.util.BeanHandler.convertArticle:125  文章数据结果集解析异常
+2019-11-25.15:27:22 ERROR [main] com.wl.web.blog.util.BeanHandler.convertArticle:126  文章数据结果集解析异常
+2019-11-25.15:28:23 ERROR [main] com.wl.web.blog.util.BeanHandler.convertArticle:126  文章数据结果集解析异常
+2019-11-25.15:28:52 ERROR [main] com.wl.web.blog.util.BeanHandler.convertUser:60  用户数据结果集解析产生异常
+2019-11-25.15:29:33 ERROR [main] com.wl.web.blog.util.BeanHandler.convertUser:60  用户数据结果集解析产生异常
+2019-11-25.15:30:25 ERROR [main] com.wl.web.blog.util.BeanHandler.convertArticle:126  文章数据结果集解析异常

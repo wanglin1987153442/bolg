@@ -1,0 +1,6 @@
+2019-11-17.10:27:36 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:46  注册失败
+2019-11-17.10:29:23 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:46  注册失败
+2019-11-17.10:30:34 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:46  注册失败
+2019-11-17.10:55:00 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:41  成功12345678910    123456  null
+2019-11-17.10:55:50 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:46  注册失败
+2019-11-17.10:56:10 INFO  [main] com.wl.web.blog.dao.UserDaoTest.addUser:41  成功12345678910    123456  null

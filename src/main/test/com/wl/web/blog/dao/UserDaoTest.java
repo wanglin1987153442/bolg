@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -32,10 +33,12 @@ public class UserDaoTest {
     @Test
     public void addUser() {
         User user =new User();
-        user.setMobile("12345678910");
+        user.setMobile("1806997128");
         user.setPassword("123456");
+
         try {
             int result=userDao.addUser(user);
+
             logger.info("成功"+user.getMobile()+"    "
                     +user.getPassword()+"  "
             +user.getId());
@@ -44,5 +47,18 @@ public class UserDaoTest {
             logger.info("注册失败");
             e.printStackTrace();
         }
+    }
+
+
+    @Test
+    public void selectHotUsers() throws SQLException {
+        List<User> userList = userDao.selectHotUsers();
+        userList.forEach(System.out::println);
+    }
+
+    @Test
+    public void selectByKeywords() throws SQLException{
+        List<User> userList = userDao.selectByKeywords("王");
+        System.out.println(userList.size());
     }
 }
